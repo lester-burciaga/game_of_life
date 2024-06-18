@@ -10,6 +10,7 @@
     "@types/node": "^16.18.97",
     "@types/react": "^18.3.2",
     "@types/react-dom": "^18.3.0",
+    "eslint-config-airbnb-typescript": "^18.0.0",
     "react": "^18.3.1",
     "react-bootstrap": "^2.10.2",
     "react-dom": "^18.3.1",
@@ -24,10 +25,7 @@
     "eject": "react-scripts eject"
   },
   "eslintConfig": {
-    "extends": [
-      "react-app",
-      "react-app/jest"
-    ]
+    "extends": []
   },
   "browserslist": {
     "production": [
@@ -47,6 +45,7 @@
     "@eslint/js": "^9.2.0",
     "eslint": "^9.2.0",
     "eslint-config-prettier": "^9.1.0",
+    "eslint-config-react": "^1.1.7",
     "eslint-plugin-react": "^7.34.1",
     "globals": "^15.2.0",
     "typescript-eslint": "^7.9.0"

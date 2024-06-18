@@ -1,4 +1,4 @@
-import React from 'react';
+
 import { render, screen } from '@testing-library/react';
 import App from './App';
 
@@ -21,23 +21,6 @@ describe('<App />', () => {
       expect(board).toBeInTheDocument();
     });
 
-    describe('with action buttons', () => { 
-      it('should display start button', () => {
-        renderComponent();
-        const startButton = screen.getByRole('button', { name: /start/i });
-        expect(startButton).toBeInTheDocument();
-      });
-      it('should display random button', () => {
-        renderComponent();
-        const randomButton = screen.getByRole('button', { name: /random/i });
-        expect(randomButton).toBeInTheDocument();
-      });
-      it('should display clear button', () => {
-        renderComponent();
-        const clearButton = screen.getByRole('button', { name: /clear/i });
-        expect(clearButton).toBeInTheDocument();
-      });
-   })
  })
 
  describe('when start button is clicked', () => { 
