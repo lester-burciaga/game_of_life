@@ -1,6 +1,6 @@
 interface ButtonProps {
     label: string
-    style?: string | 'primary'
+    style?: 'primary' | 'secondary' | 'success' | 'danger'
     onClick: () => void
 }
 

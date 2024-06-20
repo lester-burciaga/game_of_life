@@ -29,12 +29,12 @@ describe('<Button />', () => {
      })
 
      describe('with custom props', () => { 
-        const customButton = () => render(<Button label='test' style='success' onClick={handleClick} />);
+        const customButton = () => render(<Button label='Click me' style='success' onClick={handleClick} />);
         beforeEach(() => customButton());
 
         it ('should display text', () => {
             const button = screen.getByRole('button');
-            expect(button).toHaveTextContent('test');
+            expect(button).toHaveTextContent(/click me/i);
         })
 
         it('should call handleClick', () => {
