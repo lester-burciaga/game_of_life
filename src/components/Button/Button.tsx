@@ -3,7 +3,7 @@ import {Button as CustomButton} from 'react-bootstrap';
 
 function Button({ label, style, onClick }: ButtonProps) {
   return (
-    <CustomButton variant={style} className="mx-2" onClick={onClick}>{label}</CustomButton>
+    <CustomButton name={label} variant={style} className="mx-2" onClick={onClick}>{label}</CustomButton>
   )
 }
 

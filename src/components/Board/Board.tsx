@@ -1,11 +1,15 @@
 
-import { useState } from 'react';
-import { MATRIX, OPERATIONS, generateEmptyGrid } from '../../constants/types'
+import { useCallback, useRef, useState } from 'react';
+import { MATRIX, generateEmptyGrid } from '../../constants/types'
 import Button from '../Button/Button'
 const Board = () => {
   const [grid, setGrid] = useState(() => {
     return generateEmptyGrid();
   });
+  const [running, setRunning] = useState(false);
+
+  const runningRef = useRef(running);
+  runningRef.current = running;
 
 /**
  * Updates the grid state by toggling the value of a cell at the given coordinates.
@@ -36,13 +40,81 @@ const Board = () => {
     });
     setGrid(rows);
   };
+
+  /**
+   * Generates an empty grid of cells.
+   */
+  function clearGrid() {
+    setGrid(generateEmptyGrid());
+  }
+
+  /**
+   * It loops through the grid and determines the next state of each cell 
+   * based on its current state and the number of its neighbors.
+   * @param {Matrix} grid - The current state of the grid.
+   * @returns {Matrix} newGrid - The next state of the grid.
+   */
+  const calculateNeighbors = (grid: any[][]) => {
+    const newGrid = grid.map((row, i) => {
+      const newRow = row.map((cell, j) => {
+        let neighbors = 0;
+        for (let x = -1; x <= 1; x++) {
+          for (let y = -1; y <= 1; y++) {
+            if (x === 0 && y === 0) continue;
+            const newI = (i + x + MATRIX.length) % MATRIX.length;
+            const newJ = (j + y + MATRIX.length) % MATRIX.length;
+            neighbors += grid[newI][newJ];
+          }
+        }
+
+        return neighbors < 2 || neighbors > 3
+          ? 0
+          : cell === 0 && neighbors === 3
+          ? 1
+          : cell;
+      });
+      return newRow;
+    });
+
+    return newGrid;
+  };
+
+/**
+ * It runs the simulation of the game of life.
+*/
+  const runSimulation = useCallback(() => {
+    if (!runningRef.current) {
+      return;
+    }
+
+    setGrid(prev => {
+      const newGrid = calculateNeighbors(prev);
+      return newGrid;
+    });
+
+    setTimeout(runSimulation, 150);
+  }, []);
+
+  function handleRun() {
+    setRunning(prev => !prev);
+
+    if (!running) {
+      runningRef.current = true;
+      runSimulation();
+    }
+  }
+
   
   return (
     <>
      <div>
-       <Button label='Start' style='success' onClick={() => {}}/>
+       <Button
+        label={running ? 'Stop' : 'Start'}
+        style={running ? 'danger' : 'success'}
+        onClick={() => {handleRun()}}
+        />
        <Button label='Random' style='primary' onClick={() => {randomGrid()}}/>
-       <Button label='Clear' style='secondary' onClick={() => {setGrid(generateEmptyGrid())}}/>
+       <Button label='Clear' style='secondary' onClick={() => {clearGrid()}}/>
      </div>
       <div 
           role='grid' 
