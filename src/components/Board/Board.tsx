@@ -2,8 +2,8 @@
 import { useCallback, useRef, useState } from 'react';
 import { MATRIX, generateEmptyGrid } from '../../constants/types'
 import Button from '../Button/Button'
-const Board = () => {
-  const [grid, setGrid] = useState(() => {
+function Board() {
+  const [grid, setGrid] = useState<number[][]>(() => {
     return generateEmptyGrid();
   });
   const [running, setRunning] = useState(false);
@@ -31,7 +31,7 @@ const Board = () => {
    * Generates a random grid of cells.
    * @const {Matrix} rows - The defined number of rows of the grid.
    */
-  function randomGrid() {
+  function handleRandomGrid() {
     const rows: any = [];
     MATRIX.forEach((row) => {
       rows.push(
@@ -44,7 +44,7 @@ const Board = () => {
   /**
    * Generates an empty grid of cells.
    */
-  function clearGrid() {
+  function handleClearGrid() {
     setGrid(generateEmptyGrid());
   }
 
@@ -80,7 +80,7 @@ const Board = () => {
   };
 
 /**
- * It runs the simulation of the game of life.
+ * It runs the simulation of the game.
 */
   const runSimulation = useCallback(() => {
     if (!runningRef.current) {
@@ -95,7 +95,10 @@ const Board = () => {
     setTimeout(runSimulation, 150);
   }, []);
 
-  function handleRun() {
+  /**
+   * Toggles the running state of the game.
+   */
+  function handleRunGame() {
     setRunning(prev => !prev);
 
     if (!running) {
@@ -107,14 +110,24 @@ const Board = () => {
   
   return (
     <>
-     <div>
+     <div className='m-4'>
        <Button
         label={running ? 'Stop' : 'Start'}
         style={running ? 'danger' : 'success'}
-        onClick={() => {handleRun()}}
+        onClick={() => {handleRunGame()}}
         />
-       <Button label='Random' style='primary' onClick={() => {randomGrid()}}/>
-       <Button label='Clear' style='secondary' onClick={() => {clearGrid()}}/>
+       <Button 
+       label='Random' 
+       style='primary'
+       onClick={() => {handleRandomGrid()}}
+       isDisabled={running}
+       />
+       <Button
+       label='Clear'
+       style='secondary'
+       onClick={() => {handleClearGrid()}}
+       isDisabled={running}
+       />
      </div>
       <div 
           role='grid' 

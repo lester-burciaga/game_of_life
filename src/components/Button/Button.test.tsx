@@ -4,8 +4,11 @@ import Button from './Button';
 // Mock function for onClick
 const handleClick = jest.fn();
 
+const defaultButton = () => render(<Button label='Click me' onClick={handleClick} />);
+
+const customButton = () => render(<Button label='Click me' style='success' onClick={handleClick} isDisabled={true}/>);
+
 describe('<Button />', () => { 
-    const defaultButton = () => render(<Button label='test' onClick={() => {}} />);
 
     it ('should render', () => {
         defaultButton();
@@ -16,9 +19,9 @@ describe('<Button />', () => {
     describe('with default props', () => { 
         beforeEach(() => defaultButton());
 
-        it ('should render', () => {
+        it ('should render text', () => {
             const button = screen.getByRole('button');
-            expect(button).toBeInTheDocument();
+            expect(button).toHaveTextContent(/click me/i);
         })
 
         it('should have primary variant', () => {
@@ -26,21 +29,31 @@ describe('<Button />', () => {
             expect(button).toHaveClass('btn-primary');
         })
 
+        it('should be enabled', () => {
+            const button = screen.getByRole('button');
+            expect(button).not.toBeDisabled();
+        });
+
+        describe('when button is clicked', () => { 
+            it('should call handleClick', () => {
+                const button = screen.getByRole('button');
+                button.click();
+                expect(handleClick).toHaveBeenCalledTimes(1);
+            })
+        })
      })
 
-     describe('with custom props', () => { 
-        const customButton = () => render(<Button label='Click me' style='success' onClick={handleClick} />);
+     describe('with props passed', () => { 
         beforeEach(() => customButton());
 
-        it ('should display text', () => {
+        it('should have success variant', () => {
             const button = screen.getByRole('button');
-            expect(button).toHaveTextContent(/click me/i);
+            expect(button).toHaveClass('btn-success');
         })
 
-        it('should call handleClick', () => {
+        it('should be disabled', () => {
             const button = screen.getByRole('button');
-            button.click();
-            expect(handleClick).toHaveBeenCalledTimes(1);
-        })
-    })
+            expect(button).toBeDisabled();
+        });
+     })
 })

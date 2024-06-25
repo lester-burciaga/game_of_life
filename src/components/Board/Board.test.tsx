@@ -4,7 +4,7 @@ import Board from './Board';
 
 const renderBoard = () => render(<Board />);
 
-// Helper functions
+// Helper functions to retrieve elements
 function getStartButton() {
   return screen.getByRole('button', { name: /start/i });
 }
@@ -21,10 +21,24 @@ function getClearButton() {
   return screen.getByRole('button', { name: /clear/i });
 }
 
+function clickStartButton() {
+  const startButton = getStartButton();
+  startButton.onclick = mockHandleRunGame;
+  
+  fireEvent.click(startButton);
+}
+
+function clickStopButton() {
+  const stopButton = getStopButton();
+  stopButton.onclick = mockHandleRunGame;
+  
+  fireEvent.click(stopButton);
+}
+
 // Mock functions
-const mockHandleRun = jest.fn();
-const mockHandleRandom = jest.fn();
-const mockHandleClear = jest.fn();
+const mockHandleRunGame = jest.fn();
+const mockHandleRandomGrid = jest.fn();
+const mockHandleClearGrid = jest.fn();
 
 describe('<Board />', () => { 
 
@@ -39,7 +53,6 @@ describe('<Board />', () => {
 
     describe('with start button', () => { 
       
-
       it('should display button', () => {
         const startButton = getStartButton();
         expect(startButton).toBeInTheDocument();
@@ -51,17 +64,31 @@ describe('<Board />', () => {
       })
 
       describe('when start button is clicked', () => { 
-          it('should call handleRun function', () => {
-            const startButton = getStartButton();
-            startButton.onclick = mockHandleRun;
-            
-            fireEvent.click(startButton);
-            expect(mockHandleRun).toHaveBeenCalledTimes(1);
+
+          it('should call "handleRun" function', () => {
+            clickStartButton();
+            expect(mockHandleRunGame).toHaveBeenCalledTimes(1);
           });
-          it('should toggle button title to stop,', () => {
+
+          it('should toggle button text to stop,', () => {
             const startButton = getStartButton();
-            fireEvent.click(startButton);
+
+            clickStartButton();
             expect(startButton).toHaveTextContent(/stop/i);
+          });
+
+          it('should "Random" button be disabled', () => {
+            clickStartButton();
+
+            const randomButton = getRandomButton();
+            expect(randomButton).toBeDisabled();
+          });
+
+          it('should "Clear" button be disabled', () => {
+            clickStartButton();
+
+            const clearButton = getClearButton();
+            expect(clearButton).toBeDisabled();
           });
       })
     })
@@ -77,25 +104,37 @@ describe('<Board />', () => {
         expect(stopButton).toHaveTextContent(/stop/i);
       })
 
-      it('should have warning variant', () => {
+      it('should have danger variant', () => {
         const stopButton = getStopButton();
         expect(stopButton).toHaveClass('btn-danger');
       })
 
       describe('when stop button is clicked', () => { 
-          it('should call handleRun function', () => {
-             
-            const stopButton = getStopButton();
-            stopButton.onclick = mockHandleRun;
+          it('should call "handleRun" function', () => { 
+            clickStopButton();
 
-            fireEvent.click(stopButton);
-            expect(mockHandleRun).toHaveBeenCalledTimes(1);
+            expect(mockHandleRunGame).toHaveBeenCalledTimes(1);
           });
 
-          it('should toggle button title to start', () => {
+          it('should toggle button text to start', () => {
             const stopButton = getStopButton();
-            fireEvent.click(stopButton);
+
+            clickStopButton();
             expect(stopButton).toHaveTextContent(/start/i);
+          });
+
+          it('should "Random" button be enabled', () => {
+            clickStopButton();
+
+            const randomButton = getRandomButton();
+            expect(randomButton).toBeEnabled();
+          });
+
+          it('should "Clear" button be enabled', () => {
+            clickStopButton();
+
+            const clearButton = getClearButton();
+            expect(clearButton).toBeEnabled();
           });
       })
     })
@@ -109,16 +148,17 @@ describe('<Board />', () => {
 
       it('should have primary variant', () => {
         const randomButton = getRandomButton();
+
         expect(randomButton).toHaveClass('btn-primary');
       })
 
       describe('when random button is clicked', () => { 
-          it('should call randomGrid function', () => {
+          it('should call "handleRandomGrid" function', () => {
             const randomButton = getRandomButton();
-            randomButton.onclick = mockHandleRandom;
+            randomButton.onclick = mockHandleRandomGrid;
 
             fireEvent.click(randomButton);
-            expect(mockHandleRandom).toHaveBeenCalledTimes(1);
+            expect(mockHandleRandomGrid).toHaveBeenCalledTimes(1);
           });
       })
     })
@@ -127,21 +167,23 @@ describe('<Board />', () => {
 
       it('should display button', () => {
         const clearButton = getClearButton();
+
         expect(clearButton).toHaveTextContent(/clear/i);
       })
 
       it('should have secondary variant', () => {
         const clearButton = getClearButton();
+
         expect(clearButton).toHaveClass('btn-secondary');
       })
 
       describe('when clear button is clicked', () => { 
-          it('should call clearGrid function', () => {
+          it('should call "handleClearGrid" function', () => {
             const clearButton = getClearButton();
-            clearButton.onclick = mockHandleClear;
+            clearButton.onclick = mockHandleClearGrid;
 
             fireEvent.click(clearButton);
-            expect(mockHandleClear).toHaveBeenCalledTimes(1);
+            expect(mockHandleClearGrid).toHaveBeenCalledTimes(1);
           });
       })
     })
