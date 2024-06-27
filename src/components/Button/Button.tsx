@@ -1,21 +1,23 @@
-import { isDisabled } from '@testing-library/user-event/dist/utils';
+import React from 'react';
 import ButtonProps from './ButtonProps';
-import {Button as CustomButton} from 'react-bootstrap';
+import { Button as CustomButton } from 'react-bootstrap';
 
 /**
- * Custom Button component
+ * Custom Button component using react-bootstrap Button as a base
  * @param {ButtonProps} props - ButtonProps 
 */
-function Button({ label, style, onClick, isDisabled }: ButtonProps) {
+function Button({ label, style, onClick, isDisabled }: ButtonProps){
   return (
     <CustomButton
-    name={label}
-    variant={style}
-    className="mx-2"
-    onClick={onClick}
-    disabled={isDisabled}
-    >{label}</CustomButton>
+      name={label}
+      variant={style}
+      className="mx-2"
+      onClick={onClick}
+      disabled={isDisabled}
+    >
+      {label}
+    </CustomButton>
   )
 }
 
-export default Button
+export default Button;

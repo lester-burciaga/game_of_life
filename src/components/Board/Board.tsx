@@ -1,13 +1,19 @@
 
 import { useCallback, useRef, useState } from 'react';
-import { MATRIX, generateEmptyGrid } from '../../constants/types'
-import Button from '../Button/Button'
+import { MATRIX } from '../../constants/data'
+
+import { calculateCellNeighbors, generateEmptyGrid } from '../../utils/operations';
+import CustomButton from '../Button/Button';
+
 function Board() {
+  // State to keep track of the grid
   const [grid, setGrid] = useState<number[][]>(() => {
-    return generateEmptyGrid();
+    return generateEmptyGrid(MATRIX);
   });
+  // State to keep track of whether the game is running
   const [running, setRunning] = useState(false);
 
+  // Reference to the running state
   const runningRef = useRef(running);
   runningRef.current = running;
 
@@ -16,7 +22,7 @@ function Board() {
  *
  * @param {number} x - The row index of the cell to toggle.
  * @param {number} y - The column index of the cell to toggle.
- * @return {void} This function does not return anything.
+ *
 */
   const handleCellClick = (x: number, y: number) => {
     setGrid(prev => {
@@ -27,12 +33,12 @@ function Board() {
     })
   };
 
-  /**
-   * Generates a random grid of cells.
-   * @const {Matrix} rows - The defined number of rows of the grid.
-   */
+/**
+ * Generates a random grid of cells.
+ * @const {Matrix} rows - The defined number of rows of the grid.
+ */
   function handleRandomGrid() {
-    const rows: any = [];
+    const rows: number[][] = [];
     MATRIX.forEach((row) => {
       rows.push(
         Array.from(Array(MATRIX.length), () => (Math.random() > 0.6 ? 1 : 0))
@@ -41,43 +47,12 @@ function Board() {
     setGrid(rows);
   };
 
-  /**
-   * Generates an empty grid of cells.
-   */
+/**
+ * Generates an empty grid of cells.
+ */
   function handleClearGrid() {
-    setGrid(generateEmptyGrid());
+    setGrid(generateEmptyGrid(MATRIX));
   }
-
-  /**
-   * It loops through the grid and determines the next state of each cell 
-   * based on its current state and the number of its neighbors.
-   * @param {Matrix} grid - The current state of the grid.
-   * @returns {Matrix} newGrid - The next state of the grid.
-   */
-  const calculateNeighbors = (grid: any[][]) => {
-    const newGrid = grid.map((row, i) => {
-      const newRow = row.map((cell, j) => {
-        let neighbors = 0;
-        for (let x = -1; x <= 1; x++) {
-          for (let y = -1; y <= 1; y++) {
-            if (x === 0 && y === 0) continue;
-            const newI = (i + x + MATRIX.length) % MATRIX.length;
-            const newJ = (j + y + MATRIX.length) % MATRIX.length;
-            neighbors += grid[newI][newJ];
-          }
-        }
-
-        return neighbors < 2 || neighbors > 3
-          ? 0
-          : cell === 0 && neighbors === 3
-          ? 1
-          : cell;
-      });
-      return newRow;
-    });
-
-    return newGrid;
-  };
 
 /**
  * It runs the simulation of the game.
@@ -88,16 +63,16 @@ function Board() {
     }
 
     setGrid(prev => {
-      const newGrid = calculateNeighbors(prev);
+      const newGrid = calculateCellNeighbors(prev, MATRIX);
       return newGrid;
     });
 
     setTimeout(runSimulation, 150);
   }, []);
 
-  /**
-   * Toggles the running state of the game.
-   */
+/**
+ * Toggles the running state of the game.
+ */
   function handleRunGame() {
     setRunning(prev => !prev);
 
@@ -110,25 +85,27 @@ function Board() {
   
   return (
     <>
-     <div className='m-4'>
-       <Button
-        label={running ? 'Stop' : 'Start'}
-        style={running ? 'danger' : 'success'}
-        onClick={() => {handleRunGame()}}
+      {/*** Action buttons ***/}
+      <div className='m-4'>
+        <CustomButton
+          label={running ? '■ Stop' : '▶ Start'}
+          style={running ? 'danger' : 'success'}
+          onClick={() => {handleRunGame()}}
         />
-       <Button 
-       label='Random' 
-       style='primary'
-       onClick={() => {handleRandomGrid()}}
-       isDisabled={running}
-       />
-       <Button
-       label='Clear'
-       style='secondary'
-       onClick={() => {handleClearGrid()}}
-       isDisabled={running}
-       />
-     </div>
+        <CustomButton 
+        label='⤮&nbsp; Random' 
+        style='primary'
+        onClick={() => {handleRandomGrid()}}
+        isDisabled={running}
+        />
+        <CustomButton
+        label='🧹&nbsp; Clear'
+        style='secondary'
+        onClick={() => {handleClearGrid()}}
+        isDisabled={running}
+        />
+      </div>
+      {/*** Game grid ***/}
       <div 
           role='grid' 
           className='justify-content-center mt-4'

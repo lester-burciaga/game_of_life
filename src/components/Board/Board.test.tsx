@@ -51,7 +51,7 @@ describe('<Board />', () => {
         expect(board).toBeInTheDocument();
     })
 
-    describe('with start button', () => { 
+    describe('with "start" button', () => { 
       
       it('should display button', () => {
         const startButton = getStartButton();
@@ -63,7 +63,7 @@ describe('<Board />', () => {
         expect(startButton).toHaveClass('btn-success');
       })
 
-      describe('when start button is clicked', () => { 
+      describe('when "start" button is clicked', () => { 
 
           it('should call "handleRun" function', () => {
             clickStartButton();
@@ -93,7 +93,7 @@ describe('<Board />', () => {
       })
     })
 
-    describe('with stop button', () => { 
+    describe('with "stop" button', () => { 
 
       beforeEach(() => {
         fireEvent.click(getStartButton());
@@ -109,7 +109,7 @@ describe('<Board />', () => {
         expect(stopButton).toHaveClass('btn-danger');
       })
 
-      describe('when stop button is clicked', () => { 
+      describe('when "stop" button is clicked', () => { 
           it('should call "handleRun" function', () => { 
             clickStopButton();
 
@@ -139,7 +139,7 @@ describe('<Board />', () => {
       })
     })
 
-    describe('with random button', () => { 
+    describe('with "random" button', () => { 
 
       it('should display button', () => {  
         const randomButton = getRandomButton();
@@ -152,7 +152,7 @@ describe('<Board />', () => {
         expect(randomButton).toHaveClass('btn-primary');
       })
 
-      describe('when random button is clicked', () => { 
+      describe('when "random" button is clicked', () => { 
           it('should call "handleRandomGrid" function', () => {
             const randomButton = getRandomButton();
             randomButton.onclick = mockHandleRandomGrid;
@@ -163,7 +163,7 @@ describe('<Board />', () => {
       })
     })
      
-    describe('with clear button', () => { 
+    describe('with "clear" button', () => { 
 
       it('should display button', () => {
         const clearButton = getClearButton();
@@ -177,7 +177,7 @@ describe('<Board />', () => {
         expect(clearButton).toHaveClass('btn-secondary');
       })
 
-      describe('when clear button is clicked', () => { 
+      describe('when "clear" button is clicked', () => { 
           it('should call "handleClearGrid" function', () => {
             const clearButton = getClearButton();
             clearButton.onclick = mockHandleClearGrid;
