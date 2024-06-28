@@ -1,5 +1,5 @@
 # ReactJs Game Of Live 
-[Live Demo](https://lester-burciaga.github.io/game-of-life/)
+[Live Demo](https://lester-burciaga.github.io/game_of_life/)
 
 Conway's Game of Life using React/Typescript
 
@@ -8,18 +8,18 @@ Conway's Game of Life using React/Typescript
 On the root project folder run:
 
 ```bash
-npm install
+yarn install
 ```
 ## Run app
 
 ```bash
-npm start
+yarn start
 ```
 
 ## Run tests
 
 ```bash
-npm test
+yarn test
 ```
 Launches the test runner in the interactive watch mode.
 

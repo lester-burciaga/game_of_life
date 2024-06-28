@@ -1,4 +1,4 @@
-
+import React from 'react';
 import { useCallback, useRef, useState } from 'react';
 import { MATRIX } from '../../constants/data'
 
@@ -39,7 +39,7 @@ function Board() {
  */
   function handleRandomGrid() {
     const rows: number[][] = [];
-    MATRIX.forEach((row) => {
+    MATRIX.forEach(() => {
       rows.push(
         Array.from(Array(MATRIX.length), () => (Math.random() > 0.6 ? 1 : 0))
       );
