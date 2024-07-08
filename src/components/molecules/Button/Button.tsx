@@ -1,5 +1,5 @@
 import React from 'react';
-import ButtonProps from './ButtonProps';
+import type ButtonProps from './ButtonProps.type';
 import { Button as CustomButton } from 'react-bootstrap';
 
 /**

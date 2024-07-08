@@ -1,9 +1,11 @@
 import React from 'react';
 import { useCallback, useRef, useState } from 'react';
-import { MATRIX } from '../../constants/data'
+import { MATRIX } from '../../../constants/data'
 
-import { calculateCellNeighbors, generateEmptyGrid } from '../../utils/operations';
-import CustomButton from '../Button/Button';
+import { calculateCellNeighbors, generateEmptyGrid } from '../../../utils/operations';
+
+import { Button } from '../../molecules/Button';
+import { GridCell } from '../../molecules/GridCell';
 
 function Board() {
   // State to keep track of the grid
@@ -87,18 +89,18 @@ function Board() {
     <>
       {/*** Action buttons ***/}
       <div className='m-4'>
-        <CustomButton
+        <Button
           label={running ? '■ Stop' : '▶ Start'}
           style={running ? 'danger' : 'success'}
           onClick={() => {handleRunGame()}}
         />
-        <CustomButton 
+        <Button 
         label='⤮&nbsp; Random' 
         style='primary'
         onClick={() => {handleRandomGrid()}}
         isDisabled={running}
         />
-        <CustomButton
+        <Button
         label='🧹&nbsp; Clear'
         style='secondary'
         onClick={() => {handleClearGrid()}}
@@ -116,16 +118,12 @@ function Board() {
         >
         {grid.map((rows, i) =>
           rows.map((col: number, k: number) => (
-            <div
+            <GridCell
               key={`${col}/${k}`}
-              onClick={() => handleCellClick(i, k)}
-              role='gridcell'
-              style={{
-                width: 20,
-                height: 20,
-                backgroundColor: grid[i][k] ? '#333' : '#fff',
-                border: 'solid 1px grey',
-              }}
+              i={i}
+              k={k}
+              isCellAlive={!!grid[i][k]}
+              handleCellClick={handleCellClick}
             />
           ))
         )}
